@@ -1,7 +1,0 @@
-<div class="entry">
-  <h1>{{title}}</h1>
-	<div class="body">
-  <h2>template</h2>
-    {{body}}
-  </div>
-</div>
