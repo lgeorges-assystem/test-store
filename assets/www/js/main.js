@@ -27,13 +27,31 @@ var app = {
                 $(event.target).removeClass('tappable-active');
             });
         }
+        $(window).on('hashchange', $.proxy(this.route, this));
+    },
+    
+    route: function() {
+        var hash = window.location.hash;
+        if (!hash) {
+            $('body').html(new HomeView(this.store).render().elt);
+            return;
+        }
+        var match = hash.match(app.detailsURL);
+        if (match) {
+            this.store.findById(Number(match[1]), function(employee) {
+                $('body').html(new EmployeeView(employee).render().elt);
+            });
+        }
     },
     
     initialize: function() {
         var self = this;
+        this.detailsURL = /^#employees\/(\d{1,})/;
         self.registerEvents();
+
         this.store = new LocalStorageStore(function() {
         	$('body').html(new HomeView(self.store).render().elt);
+        	self.route();
         });
     }
 };
